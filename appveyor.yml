@@ -13,6 +13,6 @@ build: false
 test_script:
   # Install Python 3.6.2 if necessary
   - ps: echo "$env:PYTHON"
-  - ps: echo "$env:PYTHON\\Python.exe"
-  - ps: echo "$(& $env:PYTHON\\Python.exe --version)"
+  - ps: echo "${env:PYTHON}\\Python.exe"
+  - ps: echo "$(& ${env:PYTHON}\\Python.exe --version)"
   - ps: if ("$(& $env:PYTHON\\Python.exe --version)" -ne "Python 3.6.1") { echo "Foo" }
