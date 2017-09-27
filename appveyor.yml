@@ -12,5 +12,9 @@ build: false
 
 test_script:
   # Install Python 3.6.2 if necessary
-  - ps: $py_ver = "$(& ${env:PYTHON}\Python.exe --version 2> $null)"
-  - ps: if ("$py_ver" -ne "Python 3.6.1") { echo "Foo" }
+  - ps: echo "$env:PYTHON"
+  - ps: echo "$(& $env:PYTHON\\Python.exe --version)"
+  - ps: if ("$(& $env:PYTHON\\Python.exe --version)" -ne "Python 3.6.1") { echo "Foo" }
+
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
