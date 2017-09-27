@@ -1,0 +1,17 @@
+# vim ft=yaml
+
+os: Visual Studio 2015
+
+environment:
+    global:
+
+    matrix:
+
+    - PYTHON: C:\Python27
+    - PYTHON: C:\Python34
+
+install:
+  # Install Python 3.6.2 if necessary
+  - ps: echo "$(& $env:PYTHON\Python.exe --version)"
+  - ps: if ("$(& $env:PYTHON\Python.exe --version)" -ne "Python 3.6.1") { echo "Foo" }
+  - ps: .\install_python362.ps1
