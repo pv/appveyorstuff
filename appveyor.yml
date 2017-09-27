@@ -16,5 +16,5 @@ test_script:
   - ps: echo "$(& $env:PYTHON\\Python.exe --version)"
   - ps: if ("$(& $env:PYTHON\\Python.exe --version)" -ne "Python 3.6.1") { echo "Foo" }
 
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
