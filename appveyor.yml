@@ -26,7 +26,7 @@ test_script:
   - PATH=%MSYS2_ROOT%\usr\bin;%PATH%
   - echo %MINGW_URL%
   # Get mingw-builds compiler chain, put on path
-  - curl -L %MINGW_URL% -o mingw_distro.7z
+  - curl -L "%MINGW_URL%" -o mingw_distro.7z
   - 7z x mingw_distro.7z
 
 on_finish:
