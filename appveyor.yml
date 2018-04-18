@@ -25,6 +25,7 @@ test_script:
   - echo %MINGW_URL%
   # Get mingw-builds compiler chain, put on path
   - curl -L %MINGW_URL% -o mingw_distro.7z
+  - 7z x mingw_distro.7z
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
