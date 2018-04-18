@@ -6,7 +6,8 @@ environment:
 
     matrix:
 
-    - PYTHON: C:\Python27
+    - BUILD_BITS: 32
+      MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download
 
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -14,10 +15,10 @@ init:
 build: false
 
 test_script:
-  # Install Python 3.6.2 if necessary
-  - ps: echo "$env:PYTHON"
-  - ps: echo "$(& $env:PYTHON\\Python.exe --version)"
-  - ps: if ("$(& $env:PYTHON\\Python.exe --version)" -ne "Python 3.6.1") { echo "Foo" }
+  - set VC9_ROOT=C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC
+  - PATH=%MSYS2_ROOT%\usr\bin;%PATH%
+  # Get mingw-builds compiler chain, put on path
+  - curl -L %MINGW_URL% -o mingw_distro.7z
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
