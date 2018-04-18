@@ -3,9 +3,14 @@
 os: Visual Studio 2015
 
 environment:
+  global:
+    OPENBLAS_COMMIT: 2c7392f0
+    OPENBLAS_ROOT: c:\opt
+    MSYS2_ROOT: c:\msys64
 
-    matrix:
-
+  # Need for mingw-builds discussed at
+  # https://github.com/xianyi/OpenBLAS/issues/1503
+  matrix:
     - BUILD_BITS: 32
       MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download
 
@@ -17,6 +22,7 @@ build: false
 test_script:
   - set VC9_ROOT=C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC
   - PATH=%MSYS2_ROOT%\usr\bin;%PATH%
+  - echo %MINGW_URL%
   # Get mingw-builds compiler chain, put on path
   - curl -L %MINGW_URL% -o mingw_distro.7z
 
