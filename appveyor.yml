@@ -8,6 +8,9 @@ environment:
 
     - PYTHON: C:\Python27
 
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 build: false
 
 test_script:
