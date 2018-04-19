@@ -13,7 +13,7 @@ environment:
   # Note spaces instead of %20 in URL, to avoid Windows env var expansion
   matrix:
     - BUILD_BITS: 32
-      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win32/Personal Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download"
+      MINGW_BIN: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
 
 # init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -24,10 +24,9 @@ test_script:
   - set VC9_ROOT=C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC
 
   - PATH=%MSYS2_ROOT%\usr\bin;%PATH%
-  - echo %MINGW_URL%
-  # Get mingw-builds compiler chain, put on path
-  - curl -L "%MINGW_URL%" -o mingw_distro.7z
-  - 7z x mingw_distro.7z
+  - PATH=%MINGW_BIN%;%PATH%
+  - gcc --version
+  - set
 
 on_finish:
   # Note the resulting IP:port address, and use in Microsoft Remote Desktop
