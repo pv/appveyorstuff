@@ -7,25 +7,32 @@ environment:
     OPENBLAS_COMMIT: 2c7392f0
     OPENBLAS_ROOT: c:\opt
     MSYS2_ROOT: c:\msys64
+    WHEELHOUSE_UPLOADER_USERNAME: travis-worker
+    WHEELHOUSE_UPLOADER_SECRET:
+      secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
+    PYTHON: "C:\\Python27"
 
   # Need for mingw-builds discussed at
   # https://github.com/xianyi/OpenBLAS/issues/1503
+  # Downloads via https://sourceforge.net/projects/mingw-w64/files
   # Note spaces instead of %20 in URL, to avoid Windows env var expansion
   matrix:
     - BUILD_BITS: 32
-      MINGW_BIN: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
+      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win32/Personal Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download"
 
-# init:
-#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - BUILD_BITS: 64
+      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win64/Personal Builds/mingw-builds/7.3.0/threads-posix/seh/x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z/download"
 
-build: false
-
-test_script:
+build_script:
   # Build OpenBLAS, build and install the test file
   - if "%BUILD_BITS%"=="32" (set PLAT=i686) else (set PLAT=x86_64)
   - set VC9_ROOT=C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC
   - PATH=%MSYS2_ROOT%\usr\bin;%PATH%
-  - PATH=%MINGW_BIN%;%PATH%
+  # Get mingw-builds compiler chain, put on path
+  # Quote for env var to protect spaces.
+  - curl -L "%MINGW_URL%" -o downloads\mingw_distro.7z
+  - 7z x downloads\mingw_distro.7z
+  - PATH=%__CD__%\mingw%BUILD_BITS%\bin;%PATH%
   # Remove competing gcc / gfortran
   - pacman -Rs --noconfirm gcc gcc-fortran mingw-w64-%PLAT%-toolchain
   # zip needed for packing archive
@@ -33,6 +40,9 @@ test_script:
   - git submodule update --init --recursive
   - set MSYSTEM=MINGW%BUILD_BITS%
   - set START_DIR=%__CD__%
+
+test_script:
+  - bash --login "which gcc"
 
 on_finish:
   # Note the resulting IP:port address, and use in Microsoft Remote Desktop
