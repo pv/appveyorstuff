@@ -18,10 +18,10 @@ environment:
   # Note spaces instead of %20 in URL, to avoid Windows env var expansion
   matrix:
     - BUILD_BITS: 32
-      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win32/Personal Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download"
+      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win32/Personal Builds/mingw-builds/6.3.0/threads-posix/dwarf/i686-6.3.0-release-posix-dwarf-rt_v5-rev0.7z/download"
 
     - BUILD_BITS: 64
-      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win64/Personal Builds/mingw-builds/7.3.0/threads-posix/seh/x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z/download"
+      MINGW_URL: "https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win64/Personal Builds/mingw-builds/6.3.0/threads-posix/seh/x86_64-6.3.0-release-posix-seh-rt_v5-rev0.7z/download"
 
 build_script:
   # Build OpenBLAS, build and install the test file
@@ -37,12 +37,19 @@ build_script:
   - pacman -Rs --noconfirm gcc gcc-fortran mingw-w64-%PLAT%-toolchain
   # zip needed for packing archive
   - pacman -Sy --noconfirm zip
-  - git submodule update --init --recursive
   - set MSYSTEM=MINGW%BUILD_BITS%
   - set START_DIR=%__CD__%
+  - curl -L https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-2c7392f0_gcc6_3_0_win32.zip -o ob.zip
+  - unzip ob.zip
+  - cp 32/lib/libopenblas_2c7392f0_gcc6_3_0.a OpenBLAS
+  - git clone https://github.com/pv/OpenBLAS.git
+  - cd OpenBLAS
+  - git checkout -t pv/getrf-smoketest
+  - cd utest
+  - make LIBNAME=libopenblas_2c7392f0_gcc6_3_0.a
 
 test_script:
-  - bash --login "which gcc"
+  - echo
 
 on_finish:
   # Note the resulting IP:port address, and use in Microsoft Remote Desktop
