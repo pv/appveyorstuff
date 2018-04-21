@@ -41,10 +41,10 @@ build_script:
   - set START_DIR=%__CD__%
   - curl -L https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-2c7392f0_gcc6_3_0_win32.zip -o ob.zip
   - unzip ob.zip
-  - cp 32/lib/libopenblas_2c7392f0_gcc6_3_0.a OpenBLAS
   - git clone https://github.com/pv/OpenBLAS.git
   - cd OpenBLAS
-  - git checkout -t pv/getrf-smoketest
+  - git checkout -t origin/getrf-smoketest
+  - cp ..\32\lib\libopenblas_2c7392f0_gcc6_3_0.a .
   - cd utest
   - make LIBNAME=libopenblas_2c7392f0_gcc6_3_0.a
 
