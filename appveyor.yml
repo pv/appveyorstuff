@@ -48,6 +48,7 @@ build_script:
   - cd utest
   - make LIBNAME=libopenblas_2c7392f0_gcc6_3_0.a NO_LAPACK=0 EXTRALIB=
 
+
 test_script:
   - echo
 
