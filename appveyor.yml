@@ -46,7 +46,7 @@ build_script:
   - git checkout -t origin/getrf-smoketest
   - cp ..\32\lib\libopenblas_2c7392f0_gcc6_3_0.a .
   - cd utest
-  - make LIBNAME=libopenblas_2c7392f0_gcc6_3_0.a
+  - make LIBNAME=libopenblas_2c7392f0_gcc6_3_0.a NO_LAPACK=0
 
 test_script:
   - echo
