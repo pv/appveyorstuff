@@ -51,6 +51,6 @@ build_script:
 test_script:
   - echo
 
-on_finish:
+#on_finish:
   # Note the resulting IP:port address, and use in Microsoft Remote Desktop
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
